@@ -36,9 +36,8 @@ class App extends Component {
   if(this.state.input == this.state.theNumber) {
     alert('Good job! You guessed the number');
     copyState.numbOfGuesses++;
-    let num = copyState.numbOfGuesses;
-    copyState.highScore = num;
-    if(copyState.highScore < copyState.numbOfGuesses) {
+
+    if(copyState.highScore > copyState.numbOfGuesses) {
       copyState.highScore = copyState.numbOfGuesses;
     }
     copyState.numbOfGuesses = 0;
