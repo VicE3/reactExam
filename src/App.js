@@ -3,7 +3,7 @@ import './App.css';
 
 
 const initState = {
-  input: '0',
+  input: 0,
   theNumber: 0,
   numbOfGuesses: 0,
   gameMode: '',
@@ -22,32 +22,38 @@ class App extends Component {
     this.handleStandard = this.handleStandard.bind(this);
   }
 
-handleChange(e) {
-  this.setState({
-    input: parseInt(e.target.value)
-  })
-}
+  handleChange(e) {
+    this.setState({
+      input: parseInt(e.target.value)
+    })
+  }
 
-handleSubmit() {
+  handleSubmit() {
+    const copyState = Object.assign({}, this.state);
+
+    if(this.state.input === '') {alert('Please enter a valid number')
+  }
+  if(this.state.input == this.state.theNumber) {
+    alert('Good job! You guessed the number')
+    copyState.numbOfGuesses++
+  } else if(this.state.input > this.state.theNumber) {
+    alert('Your guess is too high. Please try again')
+    copyState.numbOfGuesses++
+    console.log('HI')
+  } else if(this.state.input < this.state.theNumber) {
+    alert('Your guess is too low. Please try again')
+    copyState.numbOfGuesses++
+  }
   this.state.userAnswers.push(this.state.input);
-  const copyState = Object.assign({}, this.state);
-  if(this.state.input === '') {alert('Please enter a valid number')
-  }
-  if(this.state.input == this.state.theNumber) {alert('Good job! You guessed the number')
-    copyState.numbOfGuesses++
-  } else if(this.state.input > this.state.theNumber) {('Your guess is too high. Please try again')
-    copyState.numbOfGuesses++
-  } else if(this.state.input < this.state.theNumber) {alert('Your guess is too low. Please try again')
-    copyState.numbOfGuesses++
-  }
+
   this.setState(copyState)
 }
 
 handleStandard() {
-const copyState = Object.assign({}, this.state);
-copyState.gameMode = 'Standard';
-copyState.theNumber = Math.floor((Math.random() * (10)) + (1))
-this.setState(copyState)
+  const copyState = Object.assign({}, this.state);
+  copyState.gameMode = 'Standard';
+  copyState.theNumber = Math.floor((Math.random() * (10)) + (1))
+  this.setState(copyState)
 }
 
 handleExpert() {
@@ -60,22 +66,20 @@ handleExpert() {
 
 
 render() {
-
-
-
-return(
-  <div>
-  <h1>Start Game</h1>
-  <button onClick={() => this.handleStandard()}>Standard</button>
-  <button onClick={() => this.handleExpert()}>Expert</button>
-  <div id='userGuess'><input type="number" onChange={(e) => this.handleChange(e)} value={this.state.input}/></div>
-  <button onClick={() => this.handleSubmit()}>Submit</button>
-  <div id='numOfGuesses'>Number of Guesses <p>{this.state.numbOfGuesses}</p></div>
-  <div id='highScore'>High Score <p>{this.state.oldScore}</p></div>
-  </div>
-)
+  
+  return(
+    <div>
+    <h1>Start Game</h1>
+    <button onClick={() => this.handleStandard()}>Standard</button>
+    <button onClick={() => this.handleExpert()}>Expert</button>
+    <div id='userGuess'><input type="number" onChange={(e) => this.handleChange(e)} value={this.state.input}/></div>
+    <button onClick={() => this.handleSubmit()}>Submit</button>
+    <div id='numOfGuesses'>Number of Guesses <p>{this.state.numbOfGuesses}</p></div>
+    <div id='highScore'>High Score <p>{this.state.oldScore}</p></div>
+    </div>
+  )
 
 }
 }
 
- export default App;
+export default App;
