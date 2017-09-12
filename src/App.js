@@ -34,24 +34,23 @@ class App extends Component {
     if(this.state.input === '') {alert('Please enter a valid number')
   }
   if(this.state.input == this.state.theNumber) {
-    alert('Good job! You guessed the number')
-    copyState.numbOfGuesses++
+    alert('Good job! You guessed the number');
+    copyState.numbOfGuesses++;
+    let num = copyState.numbOfGuesses;
+    copyState.highScore = num;
+    if(copyState.highScore < copyState.numbOfGuesses) {
+      copyState.highScore = copyState.numbOfGuesses;
+    }
+    copyState.numbOfGuesses = 0;
   } else if(this.state.input > this.state.theNumber) {
-    alert('Your guess is too high. Please try again')
-    copyState.numbOfGuesses++
+    alert('Your guess is too high. Please try again');
+    copyState.numbOfGuesses++;
   } else if(this.state.input < this.state.theNumber) {
-    alert('Your guess is too low. Please try again')
-    copyState.numbOfGuesses++
+    alert('Your guess is too low. Please try again');
+    copyState.numbOfGuesses++;
   }
   this.state.userAnswers.push(this.state.input);
-this.setState(copyState)
-
-let num = this.state.numbOfGuesses
-this.state.highScore = num
-if(this.state.highScore < this.state.numbOfGuesses) {
-  this.state.highScore = this.state.numbOfGuesses
-}
-
+  this.setState(copyState)
 }
 
 handleStandard() {
@@ -68,6 +67,9 @@ handleExpert() {
   this.setState(copyState)
 }
 
+handleReset() {
+  this.setState(initState);
+}
 
 
 render() {
@@ -79,8 +81,9 @@ render() {
     <button onClick={() => this.handleExpert()}>Expert</button>
     <div id='userGuess'><input type="number" onChange={(e) => this.handleChange(e)} value={this.state.input}/></div>
     <button onClick={() => this.handleSubmit()}>Submit</button>
+    <button onClick={() => this.handleReset()}>Reset</button>
     <div id='numOfGuesses'>Number of Guesses <p>{this.state.numbOfGuesses}</p></div>
-    <div id='highScore'>High Score <p>{this.state.oldScore}</p></div>
+    <div id='highScore'>High Score <p>{this.state.highScore}</p></div>
     </div>
   )
 
