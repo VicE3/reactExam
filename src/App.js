@@ -1,101 +1,81 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+
+const initState = {
+  input: '0',
+  theNumber: 0,
+  numbOfGuesses: 0,
+  gameMode: '',
+  userAnswers: [],
+  oldScore: 0,
+  newScore: 0,
+
+};
 
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      "numOfGuesses": 0,
-      "highScore": 0,
-    };
-    this.handleClick = this.handleClick.bind(this);
-
+    this.state = initState;
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleStandard = this.handleStandard.bind(this);
   }
 
-
-  handleClick(e) {
-    e.preventDefault
-    var guess = prompt('I am thinking of a number between 1 and 10. What is my number?');
-
-    var randomNumber = Math.floor(Math.random() * 10) + 1;
-
-    var theGuess = parseInt(guess);
-
-    if (theGuess === randomNumber) {
-      alert(' You guessed the number!');
-      this.setState({
-        numOfGuesses: 1
-      })
-      console.log(randomNumber);
-    } else if (theGuess !== randomNumber) {
-        alert( theGuess + ' is not the number.');
-        prompt('I am thinking of a number between 1 and 10. What is my number?');
-        this.setState({
-          numOfGuesses: 2
-      })
-      console.log(randomNumber);
-      alert('Sorry, the number was ' + randomNumber);
-    }
-  }
-
-
-  handleClick1(e) {
-    e.preventDefault
-    var guess = prompt('I am thinking of a number between 1 and 100. What is my number?');
-
-    var randomNumber = Math.floor(Math.random() * 100) + 1;
-
-    var theGuess = parseInt(guess);
-
-    if (theGuess === randomNumber) {
-      alert(' You guessed the number!');
-      this.setState({
-        numOfGuesses: 1
-      })
-      console.log(randomNumber);
-    } else if (theGuess !== randomNumber) {
-        alert( theGuess + ' is not the number.');
-        prompt('I am thinking of a number between 1 and 10. What is my number?');
-        this.setState({
-          numOfGuesses: 2
-      })
-      console.log(randomNumber);
-      alert('Sorry, the number was ' + randomNumber);
-    }
-  }
-
-
-
-
-  render() {
-    return (
-      <div className="container">
-        <h1>
-          Start Game
-          </h1>
-      <button className="standard" onClick={this.handleClick}>Standard</button>
-      <button className="expert" onClick={this.handleClick1}>Expert</button>
-      <form>
-        <input type="text" name="1-10" placeholder="Guess a number 1-10"></input>
-        <input type="text" name="1-100" placeholder="Guess a number 1-100"></input>
-      </form>
-      <button onClick={this.handleClick}>Submit</button>
-      <h2 className="numOfGuesses">
-      Number of Guesses
-      </h2>
-        <p>{this.state.numOfGuesses}</p>
-      <h2 className="highScore">
-      High Score
-      </h2>
-      <button className="reset">
-      Reset
-      </button>
-      </div>
-    );
-  }
-
+handleChange(e) {
+  this.setState({
+    input: parseInt(e.target.value)
+  })
 }
 
-export default App;
+handleSubmit() {
+  this.state.userAnswers.push(this.state.input);
+  const copyState = Object.assign({}, this.state);
+  if(this.state.input === '') {alert('Please enter a valid number')
+  }
+  if(this.state.input == this.state.theNumber) {alert('Good job! You guessed the number')
+    copyState.numbOfGuesses++
+  } else if(this.state.input > this.state.theNumber) {('Your guess is too high. Please try again')
+    copyState.numbOfGuesses++
+  } else if(this.state.input < this.state.theNumber) {alert('Your guess is too low. Please try again')
+    copyState.numbOfGuesses++
+  }
+  this.setState(copyState)
+}
+
+handleStandard() {
+const copyState = Object.assign({}, this.state);
+copyState.gameMode = 'Standard';
+copyState.theNumber = Math.floor((Math.random() * (10)) + (1))
+this.setState(copyState)
+}
+
+handleExpert() {
+  const copyState = Object.assign({}, this.state);
+  copyState.gameMode = 'Expert';
+  copyState.theNumber = Math.floor((Math.random() * (100)) + (1))
+  this.setState(copyState)
+}
+
+
+
+render() {
+
+
+
+return(
+  <div>
+  <h1>Start Game</h1>
+  <button onClick={() => this.handleStandard()}>Standard</button>
+  <button onClick={() => this.handleExpert()}>Expert</button>
+  <div id='userGuess'><input type="number" onChange={(e) => this.handleChange(e)} value={this.state.input}/></div>
+  <button onClick={() => this.handleSubmit()}>Submit</button>
+  <div id='numOfGuesses'>Number of Guesses <p>{this.state.numbOfGuesses}</p></div>
+  <div id='highScore'>High Score <p>{this.state.oldScore}</p></div>
+  </div>
+)
+
+}
+}
+
+ export default App;
