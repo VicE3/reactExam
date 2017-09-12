@@ -8,7 +8,7 @@ const initState = {
   numbOfGuesses: 0,
   gameMode: '',
   userAnswers: [],
-  oldScore: 0,
+  highScore: 0,
   newScore: 0,
 
 };
@@ -39,14 +39,19 @@ class App extends Component {
   } else if(this.state.input > this.state.theNumber) {
     alert('Your guess is too high. Please try again')
     copyState.numbOfGuesses++
-    console.log('HI')
   } else if(this.state.input < this.state.theNumber) {
     alert('Your guess is too low. Please try again')
     copyState.numbOfGuesses++
   }
   this.state.userAnswers.push(this.state.input);
+this.setState(copyState)
 
-  this.setState(copyState)
+let num = this.state.numbOfGuesses
+this.state.highScore = num
+if(this.state.highScore < this.state.numbOfGuesses) {
+  this.state.highScore = this.state.numbOfGuesses
+}
+
 }
 
 handleStandard() {
@@ -66,7 +71,7 @@ handleExpert() {
 
 
 render() {
-  
+
   return(
     <div>
     <h1>Start Game</h1>
