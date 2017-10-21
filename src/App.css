@@ -1,0 +1,15 @@
+body {
+  background-image: url(img/wood-forest-autumn-mushroomsha.jpg);
+  text-align: center;
+  color: white;
+  text-shadow: 1px 1px black, 2px 2px black, 3px 3px black, 3px 2px white;
+  font-size: 20px;
+}
+
+.gameMode {
+  margin: 20px 10px 20px 2px;
+}
+
+.bottomBtns {
+  margin: 20px 10px 20px 2px;
+}
